@@ -55,3 +55,32 @@ Bool buscaOrdenadaDecrescente(ListaLigada* lista, Elemento e){
     }
     return FALSE;
 }
+
+Bool insercao(ListaLigada* lista, Elemento e, int posicao){
+    No* novo = (No*)malloc(sizeof(No));
+    novo->valor = e;
+   
+    if(posicao > lista->tamanho || posicao < 0)
+        return FALSE;
+
+    if(posicao == 0){ //Inserção no primeiro índice
+        novo->proximo = lista->primeiro;
+        lista->primeiro = novo;
+        lista->tamanho++; //Incrementa o tamanho da lista
+    }
+    else{
+        No *noAtual = lista->primeiro;
+        No *noAnterior = NULL;
+        int indice = 0;
+
+        while(indice < posicao){ //Enquanto não achar a posição para inserir
+            noAnterior = noAtual;
+            noAtual = noAtual->proximo;
+            indice++;
+        }
+        novo->proximo = noAtual;
+        noAnterior->proximo = novo;
+        lista->tamanho++; //Incrementa o tamanho da lista
+    }
+    return TRUE;
+}
