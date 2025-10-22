@@ -366,3 +366,91 @@ Bool insercaoCabecaOrdenadaDecrescente(ListaLigadaCabeca* lista, Elemento e){
     return TRUE;
 }
 
+Bool remocaoCabecaElemento(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo;
+    No* noAnterior = lista->noCabeca;
+
+    if(noAtual == NULL) //Se a lista estiver vazia
+        return FALSE;
+
+    while(noAtual != NULL && noAtual->valor != e){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+
+    if(noAtual == NULL) //Elemento não encontrado
+        return FALSE;
+
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual); //Desalocando o nó
+    return TRUE;
+}
+
+Bool remocaoCabecaElementoOrdenadaCrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo;
+    No* noAnterior = lista->noCabeca;
+
+    if(noAtual == NULL) //Se a lista estiver vazia
+        return FALSE;
+
+    while(noAtual != NULL && noAtual->valor < e){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+
+    if(noAtual == NULL || noAtual->valor != e) //Elemento não encontrado
+        return FALSE;
+
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual); //Desalocando o nó
+    return TRUE;
+}
+
+Bool remocaoCabecaElementoOrdenadaDecrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo;
+    No* noAnterior = lista->noCabeca;
+
+    if(noAtual == NULL) //Se a lista estiver vazia
+        return FALSE;
+
+    while(noAtual != NULL && noAtual->valor > e){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+
+    if(noAtual == NULL || noAtual->valor != e) //Elemento não encontrado
+        return FALSE;
+
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual); //Desalocando o nó
+    return TRUE;
+}
+
+Bool remocaoCabecaIndice(ListaLigadaCabeca* lista, int indice){
+    if(indice >= lista->tamanho || indice < 0) //Evita indices inválidos
+        return FALSE;
+    No* noAtual = lista->noCabeca->proximo;
+    No* noAnterior = lista->noCabeca;
+    int indiceAtual = 0;
+
+    if(noAtual == NULL) //Se a lista estiver vazia
+        return FALSE;
+
+    while(indiceAtual < indice){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+        indiceAtual++;
+    }
+
+    if(noAtual == NULL) //Elemento não encontrado
+        return FALSE;
+
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual); //Desalocando o nó
+    return TRUE;
+}
+
