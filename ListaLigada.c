@@ -59,6 +59,7 @@ Bool buscaOrdenadaDecrescente(ListaLigada* lista, Elemento e){
 Bool insercao(ListaLigada* lista, Elemento e, int posicao){
     No* novo = (No*)malloc(sizeof(No));
     novo->valor = e;
+    novo->proximo = NULL; //Boa prática
    
     if(posicao > lista->tamanho || posicao < 0)
         return FALSE;
@@ -82,5 +83,69 @@ Bool insercao(ListaLigada* lista, Elemento e, int posicao){
         noAnterior->proximo = novo;
         lista->tamanho++; //Incrementa o tamanho da lista
     }
+    return TRUE;
+}
+
+Bool insercaoOrdenadaCrescente(ListaLigada* lista, Elemento e){
+    No* novo = (No*)malloc(sizeof(No));
+    novo->valor = e;
+    novo->proximo = NULL; //Boa prática
+    No* noAtual = lista->primeiro;
+    No* noAnterior = NULL;
+
+    //Caso não tenha nenhum elemento na lista
+    if(lista->primeiro == NULL){
+        lista->primeiro = novo;
+        lista->tamanho++;
+        return TRUE;
+    }
+    //Caso a inserção seja no primeiro elemento
+    if(novo->valor < noAtual->valor){
+        novo->proximo = noAtual;
+        lista->primeiro = novo;
+        lista->tamanho++;
+        return TRUE;
+    }
+    //Iterar para ver onde vai inserir
+    while(noAtual != NULL && noAtual->valor <= e){ //O último nó deve apontar para o NULL e o valor atual tem que ser menor ou igual que o elemento e
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo; //Passa para o próximo nó
+    }
+    //Caso a inserção seja em um lugar arbitrário (incluindo a última posição)
+    noAnterior->proximo = novo;
+    novo->proximo = noAtual;
+    lista->tamanho++;
+    return TRUE;
+}
+
+Bool insercaoOrdenadaDecrescente(ListaLigada* lista, Elemento e){
+    No* novo = (No*)malloc(sizeof(No));
+    novo->valor = e;
+    novo->proximo = NULL; //Boa prática
+    No* noAtual = lista->primeiro;
+    No* noAnterior = NULL;
+
+    //Caso não tenha nenhum elemento na lista
+    if(lista->primeiro == NULL){
+        lista->primeiro = novo;
+        lista->tamanho++;
+        return TRUE;
+    }
+    //Caso a inserção seja no primeiro elemento
+    if(novo->valor > noAtual->valor){
+        novo->proximo = noAtual;
+        lista->primeiro = novo;
+        lista->tamanho++;
+        return TRUE;
+    }
+    //Iterar para ver onde vai inserir
+    while(noAtual != NULL && noAtual->valor >= e){ //O último nó deve apontar para o NULL e o valor atual tem que ser menor ou igual que o elemento e
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo; //Passa para o próximo nó
+    }
+    //Caso a inserção seja em um lugar arbitrário (incluindo a última posição)
+    noAnterior->proximo = novo;
+    novo->proximo = noAtual;
+    lista->tamanho++;
     return TRUE;
 }
