@@ -139,7 +139,7 @@ Bool insercaoOrdenadaDecrescente(ListaLigada* lista, Elemento e){
         return TRUE;
     }
     //Iterar para ver onde vai inserir
-    while(noAtual != NULL && noAtual->valor >= e){ //O último nó deve apontar para o NULL e o valor atual tem que ser menor ou igual que o elemento e
+    while(noAtual != NULL && noAtual->valor >= e){ //O último nó deve apontar para o NULL e o valor atual tem que ser maior ou igual que o elemento e
         noAnterior = noAtual;
         noAtual = noAtual->proximo; //Passa para o próximo nó
     }
@@ -149,3 +149,62 @@ Bool insercaoOrdenadaDecrescente(ListaLigada* lista, Elemento e){
     lista->tamanho++;
     return TRUE;
 }
+
+Bool remocaoIndice(ListaLigada* lista, int indice){
+    if(indice >= lista->tamanho || indice < 0) //Evita nunca encontrar
+        return FALSE;
+    No* noAtual = lista->primeiro;
+    No* noAnterior = NULL;
+    int indiceAtual = 0;
+
+    if(noAtual == NULL) //Caso a lista esteja vazia
+        return FALSE;
+
+    //Caso a deleção seja do primeiro nó
+    if(indice == indiceAtual){
+        lista->primeiro = noAtual->proximo;
+        free(noAtual); //Libera o nó alocado
+        lista->tamanho--; //Diminui o tamanho da lista
+        return TRUE;
+    }
+    while(indiceAtual < indice){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+        indiceAtual++;
+    }
+    //Remoção de uma posição arbitrária (Incluindo a última posição)
+    noAnterior->proximo = noAtual->proximo;
+    free(noAtual);  //Libera o nó alocado
+    lista->tamanho--; //Diminui o tamanho da lista
+    return TRUE;
+}
+
+Bool remocaoElemento(ListaLigada* lista, Elemento e){
+    No* noAtual = lista->primeiro;
+    No* noAnterior = NULL;
+
+    if(noAtual == NULL) //Caso a lista esteja vazia
+        return FALSE;
+
+    //Caso a deleção seja no primeiro nó
+    if(noAtual->valor == e){
+        lista->primeiro = noAtual->proximo;
+        lista->tamanho--;
+        free(noAtual);
+        return TRUE;
+    }
+    //Buscando a posição do elemento e
+    while(noAtual != NULL && noAtual->valor != e){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == NULL) //Não encontrou o elemento e
+        return FALSE;
+    //Deleção em posição arbitrária (incluindo a última posição)
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual);
+    return TRUE;
+}
+Bool remocaoElementoOrdenadaCrescente(ListaLigada* lista, Elemento e);
+Bool remocaoElementoOrdenadaDecrescente(ListaLigada* lista, Elemento e);
