@@ -534,3 +534,78 @@ Bool inserirCabecaCircularDecrescente(ListaLigadaCabeca* lista, Elemento e){
 
     return TRUE;
 }
+
+Bool remocaoCabecaCircularIndice(ListaLigadaCabeca* lista, int indice){
+    if(indice >= lista->tamanho || indice < 0  || lista->tamanho == 0) //Índice inválido ou lista vazia
+        return FALSE;
+
+    No* noAtual = lista->noCabeca->proximo; //A lista vazia aponta para si mesmo, então não precisa de checar se está
+    No* noAnterior = lista->noCabeca;
+    int indiceAtual = 0;
+
+    while(indiceAtual < indice){ //Irá percorrer até encontrar a posição para remover, essa condição já resolve a questão da lista vazia
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+        indiceAtual++;
+    }
+
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual);
+    return TRUE;
+}
+
+Bool remocaoCabecaCircularElemento(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo; //A lista vazia aponta para si mesmo, então não precisa de checar se está
+    No* noAnterior = lista->noCabeca;
+
+    while(noAtual != lista->noCabeca && noAtual->valor != e){ //Irá percorrer até encontrar a posição para inserir, essa condição já resolve a questão da lista vazia
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == lista->noCabeca) //Não encontrou o elemento e
+        return FALSE;
+
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual);
+
+    return TRUE;
+}
+
+Bool remocaoCabecaCircularElementoOrdenadaCrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo; //A lista vazia aponta para si mesmo, então não precisa de checar se está
+    No* noAnterior = lista->noCabeca;
+
+    while(noAtual != lista->noCabeca && noAtual->valor < e){ //Irá percorrer até encontrar a posição para remover, essa condição já resolve a questão da lista vazia
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == lista->noCabeca || noAtual->valor != e) //Não encontrou o elemento e
+        return FALSE;
+
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual);
+
+    return TRUE;
+}
+
+Bool remocaoCabecaCircularElementoOrdenadaDecrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo; //A lista vazia aponta para si mesmo, então não precisa de checar se está
+    No* noAnterior = lista->noCabeca;
+
+    while(noAtual != lista->noCabeca && noAtual->valor > e){ //Irá percorrer até encontrar a posição para remover, essa condição já resolve a questão da lista vazia
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == lista->noCabeca || noAtual->valor != e) //Não encontrou o elemento e
+        return FALSE;
+
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual);
+
+    return TRUE;
+}
+
