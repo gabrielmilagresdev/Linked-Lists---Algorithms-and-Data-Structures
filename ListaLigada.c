@@ -454,3 +454,83 @@ Bool remocaoCabecaIndice(ListaLigadaCabeca* lista, int indice){
     return TRUE;
 }
 
+ListaLigadaCabeca* criarListaCabecaCircular(){
+    ListaLigadaCabeca* lista = (ListaLigadaCabeca*)malloc(sizeof(ListaLigadaCabeca));
+    No* cabeca = (No*) malloc(sizeof(No));
+    cabeca->proximo = cabeca;
+    lista->noCabeca = cabeca;
+
+    lista->tamanho = 0;
+    return lista;
+}
+
+Bool buscaCabecaCircular(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo; //A lista vazia aponta para si mesmo, então não precisa de checar se está
+
+    while(noAtual->valor != e && noAtual != lista->noCabeca) //Irá percorrer até encontrar o elemento e ou voltar ao nó cabeça
+        noAtual = noAtual->proximo;
+    
+    return noAtual == lista->noCabeca ? FALSE : TRUE; //Se deu uma volta e não encontrou retorna falso. Caso encontrou, retorna verdadeiro
+}
+
+Bool inserirCabecaCircular(ListaLigadaCabeca* lista, Elemento e, int indice){
+    if(indice > lista->tamanho || indice < 0) //Índice inválido
+        return FALSE;
+    
+    No* noAtual = lista->noCabeca->proximo; //A lista vazia aponta para si mesmo, então não precisa de checar se está
+    No* noAnterior = lista->noCabeca;
+    No* novo = (No*) malloc(sizeof(No));
+    novo->valor = e;
+    novo->proximo = lista->noCabeca; //Se a lista estiver vazia, aponta para o cabeça
+    int indiceAtual = 0; 
+
+    while(noAtual != lista->noCabeca && indiceAtual < indice){ //Irá percorrer até chegar no índice, essa condição já resolve a questão da lista vazia
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+        indiceAtual++;
+    }
+    
+    novo->proximo = noAtual;
+    noAnterior->proximo = novo;
+    lista->tamanho++;
+
+    return TRUE;
+}
+
+Bool inserirCabecaCircularCrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo; //A lista vazia aponta para si mesmo, então não precisa de checar se está
+    No* noAnterior = lista->noCabeca;
+    No* novo = (No*) malloc(sizeof(No));
+    novo->valor = e;
+    novo->proximo = lista->noCabeca; //Se a lista estiver vazia, aponta para o cabeça
+
+    while(noAtual != lista->noCabeca && noAtual->valor < e){ //Irá percorrer até encontrar a posição para inserir, essa condição já resolve a questão da lista vazia
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+    
+    novo->proximo = noAtual;
+    noAnterior->proximo = novo;
+    lista->tamanho++;
+
+    return TRUE;
+}
+
+Bool inserirCabecaCircularDecrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo; //A lista vazia aponta para si mesmo, então não precisa de checar se está
+    No* noAnterior = lista->noCabeca;
+    No* novo = (No*) malloc(sizeof(No));
+    novo->valor = e;
+    novo->proximo = lista->noCabeca; //Se a lista estiver vazia, aponta para o cabeça
+
+    while(noAtual != lista->noCabeca && noAtual->valor > e){ //Irá percorrer até encontrar a posição para inserir, essa condição já resolve a questão da lista vazia
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+    
+    novo->proximo = noAtual;
+    noAnterior->proximo = novo;
+    lista->tamanho++;
+
+    return TRUE;
+}
