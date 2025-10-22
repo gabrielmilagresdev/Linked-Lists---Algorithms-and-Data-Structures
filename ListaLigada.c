@@ -301,3 +301,68 @@ Bool buscaCabecaDecrescente(ListaLigadaCabeca* lista, Elemento e){
     return TRUE; //Encontrou
 }
 
+Bool insercaoCabecaIndice(ListaLigadaCabeca* lista, Elemento e, int indice){
+    if(indice > lista->tamanho || indice < 0) //Evita indices inválidos
+        return FALSE;
+    No* noAtual = lista->noCabeca->proximo;
+    No* noAnterior = lista->noCabeca;
+    No* novo = (No*) malloc(sizeof(No));
+    novo->valor = e;
+    novo->proximo = NULL; //Boa prática
+    int indiceAtual = 0; //Iniciando o contador
+
+    while(indiceAtual < indice){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+
+    novo->proximo = noAtual;
+    noAnterior->proximo = novo;
+    lista->tamanho++;
+    return TRUE;
+}
+
+Bool insercaoCabecaOrdenadaCrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo; 
+    No* noAnterior = lista->noCabeca;
+    No* novo = (No*) malloc(sizeof(No));
+    novo->valor = e;
+    novo->proximo = NULL; //Boa prática
+    if(noAtual == NULL){ //Caso a lista esteja vazia
+        lista->noCabeca->proximo = novo;
+        lista->tamanho++;
+        return TRUE;
+    }
+    while(noAtual != NULL && noAtual->valor < e){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+
+    novo->proximo = noAtual;
+    noAnterior->proximo = novo;
+    lista->tamanho++;
+    return TRUE;
+}
+
+Bool insercaoCabecaOrdenadaDecrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo; 
+    No* noAnterior = lista->noCabeca;
+    No* novo = (No*) malloc(sizeof(No));
+    novo->valor = e;
+    novo->proximo = NULL; //Boa prática
+    if(noAtual == NULL){ //Caso a lista esteja vazia
+        lista->noCabeca->proximo = novo;
+        lista->tamanho++;
+        return TRUE;
+    }
+    while(noAtual != NULL && noAtual->valor > e){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+
+    novo->proximo = noAtual;
+    noAnterior->proximo = novo;
+    lista->tamanho++;
+    return TRUE;
+}
+
