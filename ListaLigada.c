@@ -16,6 +16,11 @@ typedef struct { //Struct da lista ligada
     int tamanho;
 }ListaLigada;
 
+typedef struct { //Struct da lista ligada com nó cabeça
+    No *noCabeca;
+    int tamanho;
+}ListaLigadaCabeca;
+
 ListaLigada *criar_lista(){
     ListaLigada *lista = (ListaLigada*) malloc(sizeof(ListaLigada)); //Tem que ser alocada dinâmicamente por ser acessada e manipulada em tempo de execução
     lista->primeiro = NULL; //Primeiro não há nenhum nó, aponta para NULL
@@ -206,5 +211,93 @@ Bool remocaoElemento(ListaLigada* lista, Elemento e){
     free(noAtual);
     return TRUE;
 }
-Bool remocaoElementoOrdenadaCrescente(ListaLigada* lista, Elemento e);
-Bool remocaoElementoOrdenadaDecrescente(ListaLigada* lista, Elemento e);
+
+Bool remocaoElementoOrdenadaCrescente(ListaLigada* lista, Elemento e){
+    No* noAtual = lista->primeiro;
+    No* noAnterior = NULL;
+
+    if(noAtual == NULL) //Caso a lista esteja vazia
+        return FALSE;
+
+    //Caso a deleção seja no primeiro nó
+    if(noAtual->valor == e){
+        lista->primeiro = noAtual->proximo;
+        lista->tamanho--;
+        free(noAtual);
+        return TRUE;
+    }
+    //Buscando a posição do elemento e
+    while(noAtual != NULL && noAtual->valor < e){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == NULL|| noAtual->valor != e) //Não encontrou o elemento e ou encontrou um maior que ele
+        return FALSE;
+    //Deleção em posição arbitrária (incluindo a última posição), caso tenha encontrado o elemento
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual);
+    return TRUE;
+}
+
+Bool remocaoElementoOrdenadaDecrescente(ListaLigada* lista, Elemento e){
+    No* noAtual = lista->primeiro;
+    No* noAnterior = NULL;
+
+    if(noAtual == NULL) //Caso a lista esteja vazia
+        return FALSE;
+
+    //Caso a deleção seja no primeiro nó
+    if(noAtual->valor == e){
+        lista->primeiro = noAtual->proximo;
+        lista->tamanho--;
+        free(noAtual);
+        return TRUE;
+    }
+    //Buscando a posição do elemento e
+    while(noAtual != NULL && noAtual->valor > e){
+        noAnterior = noAtual;
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == NULL|| noAtual->valor != e) //Não encontrou o elemento e ou encontrou um maior que ele
+        return FALSE;
+    //Deleção em posição arbitrária (incluindo a última posição), caso tenha encontrado o elemento
+    noAnterior->proximo = noAtual->proximo;
+    lista->tamanho--;
+    free(noAtual);
+    return TRUE;
+}
+
+Bool buscaCabeca(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo;
+
+    while(noAtual != NULL && noAtual->valor != e){
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == NULL) //Não encontrou
+        return FALSE;
+    return TRUE; //Encontrou
+}
+
+Bool buscaCabecaCrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo;
+
+    while(noAtual != NULL && noAtual->valor < e){
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == NULL || noAtual->valor != e) //Não encontrou
+        return FALSE;
+    return TRUE; //Encontrou
+}
+
+Bool buscaCabecaDecrescente(ListaLigadaCabeca* lista, Elemento e){
+    No* noAtual = lista->noCabeca->proximo;
+
+    while(noAtual != NULL && noAtual->valor > e){
+        noAtual = noAtual->proximo;
+    }
+    if(noAtual == NULL || noAtual->valor != e) //Não encontrou
+        return FALSE;
+    return TRUE; //Encontrou
+}
+
