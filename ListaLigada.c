@@ -21,6 +21,12 @@ typedef struct { //Struct da lista ligada com nó cabeça
     int tamanho;
 }ListaLigadaCabeca;
 
+typedef struct { //Struct da fila
+    No *primeiro;
+    No *ultimo;
+    int tamanho;
+}Fila;
+
 ListaLigada *criar_lista(){
     ListaLigada *lista = (ListaLigada*) malloc(sizeof(ListaLigada)); //Tem que ser alocada dinâmicamente por ser acessada e manipulada em tempo de execução
     lista->primeiro = NULL; //Primeiro não há nenhum nó, aponta para NULL
@@ -630,5 +636,36 @@ Bool remocaoPilha(ListaLigada* pilha, Elemento* e){
     pilha->primeiro = pilha->primeiro->proximo;
     pilha->tamanho--;
     free(ultimoNo); //Desalocando o nó removido
+    return TRUE;
+}
+
+Bool insercaoFila(Fila* fila, Elemento e){
+    No* novo = (No*) malloc(sizeof(No));
+    if(novo == NULL) //Não conseguiu alocar
+        return FALSE;
+    novo->valor = e;
+    novo->proximo = NULL; //Inicializando o novo nó
+
+    if(fila->primeiro == NULL){ //Caso a fila esteja vazia
+        fila->primeiro = novo;
+        fila->ultimo = novo;
+        return TRUE;
+    }
+    
+    fila->ultimo->proximo = novo;
+    fila->ultimo = novo;
+    fila->tamanho++;
+    return TRUE;
+}
+
+Bool remocaoFila(Fila* fila, Elemento *e){
+    if(fila->primeiro == NULL) //A fila está vazia
+        return FALSE;
+    No* primeiroNo = fila->primeiro;
+    *e = primeiroNo->valor;
+    fila->primeiro = fila->primeiro->proximo;
+    fila->ultimo = fila->primeiro ? fila->ultimo : NULL;
+    fila->tamanho--;
+    free(primeiroNo);
     return TRUE;
 }
