@@ -609,3 +609,26 @@ Bool remocaoCabecaCircularElementoOrdenadaDecrescente(ListaLigadaCabeca* lista, 
     return TRUE;
 }
 
+Bool insercaoPilha(ListaLigada* pilha, Elemento e){
+    No* novo = (No*) malloc(sizeof(No));
+    if(novo ==  NULL) //Não foi capaz de alocar
+        return FALSE;
+    novo->valor = e;
+
+    novo->proximo = pilha->primeiro;  
+    pilha->primeiro = novo;
+    pilha->tamanho++;
+    return TRUE;
+}
+
+Bool remocaoPilha(ListaLigada* pilha, Elemento* e){
+    No* novo = (No*) malloc(sizeof(No));
+    if(novo ==  NULL) //Não foi capaz de alocar
+        return FALSE;
+    novo->valor = e;
+    
+    novo->proximo = pilha->primeiro;  
+    pilha->primeiro = novo;
+    pilha->tamanho++;
+    return TRUE;
+}
