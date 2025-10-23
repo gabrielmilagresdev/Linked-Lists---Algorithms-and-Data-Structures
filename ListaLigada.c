@@ -622,13 +622,13 @@ Bool insercaoPilha(ListaLigada* pilha, Elemento e){
 }
 
 Bool remocaoPilha(ListaLigada* pilha, Elemento* e){
-    No* novo = (No*) malloc(sizeof(No));
-    if(novo ==  NULL) //Não foi capaz de alocar
+    if(pilha->tamanho <= 0) //Lista vazia
         return FALSE;
-    novo->valor = e;
-    
-    novo->proximo = pilha->primeiro;  
-    pilha->primeiro = novo;
-    pilha->tamanho++;
+
+    *e = pilha->primeiro->valor;
+    No* ultimoNo = pilha->primeiro;
+    pilha->primeiro = pilha->primeiro->proximo;
+    pilha->tamanho--;
+    free(ultimoNo); //Desalocando o nó removido
     return TRUE;
 }
